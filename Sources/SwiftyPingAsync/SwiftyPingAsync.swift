@@ -1,10 +1,8 @@
    // The Swift Programming Language
    // https://docs.swift.org/swift-book
 
-import SwiftyPing
+@_exported import SwiftyPing
 import Foundation
-
-typealias Configuration = PingConfiguration
 
 struct AsyncPing {
    
