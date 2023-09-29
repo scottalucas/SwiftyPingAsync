@@ -4,6 +4,8 @@
 import SwiftyPing
 import Foundation
 
+typealias Configuration = PingConfiguration
+
 struct AsyncPing {
    
    mutating func ping () -> AsyncThrowingStream<PingResponse, Error> {
