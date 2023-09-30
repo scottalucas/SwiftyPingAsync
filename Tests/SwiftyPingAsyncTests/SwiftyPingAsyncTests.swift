@@ -75,10 +75,10 @@ final class SwiftyPingAsyncTests: XCTestCase {
       XCTAssertNotNil(result?.roundtrip?.maximum)
       XCTAssertNotNil(result?.roundtrip?.minimum)
       XCTAssertNotNil(result?.roundtrip?.standardDeviation)
-      XCTAssertEqual(result!.packetLoss, 0)
-      XCTAssertEqual(result!.packetsReceived, 10)
-      XCTAssertEqual(result!.packetsTransmitted, 10)
-      XCTAssertEqual(result!.responses.count, 10)
+      XCTAssertEqual(result?.packetLoss ?? 1, 0)
+      XCTAssertEqual(result?.packetsReceived ?? .zero, 10)
+      XCTAssertEqual(result?.packetsTransmitted ?? .zero, 10)
+      XCTAssertEqual(result?.responses.count ?? .zero, 10)
    }
    func testPingResultWithPacketCount () async throws {
       var result: PingResult?
@@ -98,9 +98,9 @@ final class SwiftyPingAsyncTests: XCTestCase {
       XCTAssertNotNil(result?.roundtrip?.maximum)
       XCTAssertNotNil(result?.roundtrip?.minimum)
       XCTAssertNotNil(result?.roundtrip?.standardDeviation)
-      XCTAssertEqual(result!.packetLoss, 0)
-      XCTAssertEqual(result!.packetsReceived, 5)
-      XCTAssertEqual(result!.packetsTransmitted, 5)
-      XCTAssertEqual(result!.responses.count, 5)
+      XCTAssertEqual(result?.packetLoss ?? 1, 0)
+      XCTAssertEqual(result?.packetsReceived ?? .zero, 5)
+      XCTAssertEqual(result?.packetsTransmitted ?? .zero, 5)
+      XCTAssertEqual(result?.responses.count ?? .zero, 5)
    }
 }
