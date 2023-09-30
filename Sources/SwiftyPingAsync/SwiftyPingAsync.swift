@@ -76,5 +76,3 @@ public struct AsyncPing {
       self.pinger = pinger
    }
 }
-
-
