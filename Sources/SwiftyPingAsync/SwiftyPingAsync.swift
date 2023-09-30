@@ -7,7 +7,8 @@ import Foundation
 public struct AsyncPing {
    
    public mutating func ping () -> AsyncThrowingStream<PingResponse, Error> {
-      let stream = AsyncThrowingStream<PingResponse, Error> { cont in
+      pinger.targetCount = targetCount
+      return AsyncThrowingStream<PingResponse, Error> { cont in
          pinger.finished = { _ in
             cont.finish()
          }
@@ -20,11 +21,11 @@ public struct AsyncPing {
             cont.finish(throwing: error)
          }
       }
-      return stream
    }
    
    public mutating func pingOnce () -> AsyncThrowingStream<PingResponse, Error> {
-      let stream = AsyncThrowingStream<PingResponse, Error> { cont in
+      pinger.targetCount = 1
+      return AsyncThrowingStream<PingResponse, Error> { cont in
          pinger.finished = { _ in
             cont.finish()
          }
@@ -38,11 +39,11 @@ public struct AsyncPing {
             cont.finish(throwing: error)
          }
       }
-      return stream
    }
    
    public func pingResult () async throws -> PingResult {
-      try await withCheckedThrowingContinuation { cont in
+      pinger.targetCount = targetCount ?? 10
+      return try await withCheckedThrowingContinuation { cont in
          pinger.finished = { result in
             cont.resume(returning: result)
          }
@@ -58,21 +59,20 @@ public struct AsyncPing {
       pinger.stopPinging()
    }
    
+   public var targetCount: Int? = nil
+   
    private var pinger: SwiftyPing
    
-   public init(ipv4Address: String, config configuration: PingConfiguration, count: Int? = nil, queue: DispatchQueue) throws {
+   public init(ipv4Address: String, config configuration: PingConfiguration, queue: DispatchQueue) throws {
       let pinger = try SwiftyPing(ipv4Address: ipv4Address, config: configuration, queue: queue)
-      pinger.targetCount = count
       self.pinger = pinger
    }
-   public init(destination: SwiftyPing.Destination, configuration: PingConfiguration, count: Int? = nil, queue: DispatchQueue) throws {
+   public init(destination: SwiftyPing.Destination, configuration: PingConfiguration, queue: DispatchQueue) throws {
       let pinger = try SwiftyPing(destination: destination, configuration: configuration, queue: queue)
-      pinger.targetCount = count
       self.pinger = pinger
    }
-   public init(host: String, configuration: PingConfiguration, count: Int? = nil, queue: DispatchQueue) throws {
+   public init(host: String, configuration: PingConfiguration, queue: DispatchQueue) throws {
       let pinger = try SwiftyPing(host: host, configuration: configuration, queue: queue)
-      pinger.targetCount = count
       self.pinger = pinger
    }
 }
